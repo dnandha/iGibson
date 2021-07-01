@@ -2346,7 +2346,7 @@
     </inertial>
   </link>
 
-   <link name="eyes">
+  <link name="eyes">
       <inertial>
       <mass value="0.001"/>
       <origin xyz="0 0 0"/>

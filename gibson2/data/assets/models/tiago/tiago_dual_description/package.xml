@@ -2,7 +2,7 @@
 <package>
 
   <name>tiago_dual_description</name>
-  <version>0.1.26</version>
+  <version>0.2.1</version>
   <description>This package contains the description (mechanical, kinematic, visual,
       etc.) of the TIAGO robot.  The files in this package are parsed and used by
       a variety of other components.  Most users will not interact directly
@@ -18,8 +18,11 @@
   <run_depend>tiago_description</run_depend>
   <run_depend>hey5_description</run_depend>
   <run_depend>pal_gripper_description</run_depend>
+  <run_depend>pal_robotiq_85_description</run_depend>
+  <run_depend>pal_robotiq_140_description</run_depend>
   <run_depend>pal_wsg_gripper_description</run_depend>
   <run_depend>tiago_dual_description_calibration</run_depend>
+  <run_depend>custom_dual_ee_description</run_depend>
 
   <test_depend>rostest</test_depend>
   <test_depend>urdf_test</test_depend>

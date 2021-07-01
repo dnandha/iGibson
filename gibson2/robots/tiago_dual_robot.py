@@ -8,7 +8,6 @@ from gibson2.robots.robot_locomotor import LocomotorRobot
 
 class Tiago_Dual(LocomotorRobot):
     def __init__(self, config):
-        # TODO: update config
         self.wheel_velocity = config.get('wheel_velocity', 1.0)
         self.torso_lift_velocity = config.get('torso_lift_velocity', 1.0)
         self.head_velocity = config.get('head_velocity', 1.0)

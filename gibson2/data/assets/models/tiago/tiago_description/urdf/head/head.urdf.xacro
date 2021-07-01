@@ -20,7 +20,6 @@
   <xacro:property name="head_friction" value="1.0" />
   <xacro:property name="head_damping"  value="0.5" />
   <xacro:property name="head_max_vel"  value="3.0" />
-  <xacro:property name="head_eps"      value="0.07" />
   <xacro:property name="head_1_lower_limit" value="-75"/>
   <xacro:property name="head_1_upper_limit" value="75"/>
   <xacro:property name="head_2_lower_limit" value="-60"/>
@@ -121,29 +120,30 @@
       <safety_controller k_position="20"
                          k_velocity="20"
                          soft_lower_limit="${head_2_lower_limit * deg_to_rad + head_eps}"
-                         soft_upper_limit="${head_2_upper_limit * deg_to_rad}" />
+                         soft_upper_limit="${head_2_upper_limit * deg_to_rad - head_eps}" />
     </joint>
 
     <xacro:head_transmission name="${name}" reduction="1" offset_value="${head_2_joint_offset}"/>
 
   </xacro:macro>
 
-  <xacro:macro name="head" params="name parent camera_model description_calibration_package">
+  <xacro:macro name="head" params="name parent camera_model description_calibration_dir extrinsic_calibration_dir no_safety_eps:=False">
+    <xacro:property name="head_eps"      value="${0.00 if no_safety_eps else 0.07}" />
 
     <!-- includes -->
-    <xacro:include filename="$(find ${description_calibration_package})/urdf/calibration/calibration_constants.urdf.xacro" />
+    <xacro:include filename="$(arg description_calibration_dir)/calibration_constants.urdf.xacro" />
 
     <xacro:head_1 name="${name}_1" parent="${parent}" />
     <xacro:head_2 name="${name}_2" parent="${name}_1_link"/>
     <xacro:if value="${camera_model == 'asus-xtion'}">
-      <xacro:xtion_pro_live name="xtion" parent="${name}_2" camera_model="${camera_model}" extrinsic_package="${description_calibration_package}">
+      <xacro:xtion_pro_live name="xtion" parent="${name}_2" camera_model="${camera_model}" extrinsic_calibration_dir="${extrinsic_calibration_dir}">
         <origin xyz="${camera_position_x} ${camera_position_y} ${camera_position_z}" rpy="${camera_orientation_r} ${camera_orientation_p} ${camera_orientation_y}" />
         <!-- optical origin -->
         <origin xyz="0 0 0" rpy="${-90 * deg_to_rad} ${0 * deg_to_rad} ${-90 * deg_to_rad}" />
       </xacro:xtion_pro_live>
     </xacro:if>
     <xacro:if value="${camera_model in ['orbbec-astra', 'orbbec-astra-pro']}">
-      <xacro:orbbec_astra name="xtion" parent="${name}_2" camera_model="${camera_model}" extrinsic_package="${description_calibration_package}">
+      <xacro:orbbec_astra name="xtion" parent="${name}_2" camera_model="${camera_model}" extrinsic_calibration_dir="${extrinsic_calibration_dir}">
         <origin xyz="${camera_position_x} ${camera_position_y} ${camera_position_z}" rpy="${camera_orientation_r} ${camera_orientation_p} ${camera_orientation_y}" />
         <!-- optical origin -->
         <origin xyz="0 0 0" rpy="${-90 * deg_to_rad} ${0 * deg_to_rad} ${-90 * deg_to_rad}" />

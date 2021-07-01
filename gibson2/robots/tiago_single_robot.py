@@ -2,13 +2,12 @@ import gym
 import numpy as np
 import pybullet as p
 
-from gibson2.external.pybullet_tools.utils import joints_from_names, set_joint_positions
+from gibson2.external.pybullet_tools.utils import joints_from_names, set_joint_positions, get_movable_joints
 from gibson2.robots.robot_locomotor import LocomotorRobot
 
 
 class Tiago_Single(LocomotorRobot):
     def __init__(self, config):
-        # TODO: update config
         self.wheel_velocity = config.get('wheel_velocity', 1.0)
         self.torso_lift_velocity = config.get('torso_lift_velocity', 1.0)
         self.head_velocity = config.get('head_velocity', 1.0)

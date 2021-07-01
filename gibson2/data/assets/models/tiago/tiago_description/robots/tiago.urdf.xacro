@@ -17,7 +17,10 @@
     <xacro:arg name="camera_model" default="orbbec-astra"/> <!-- false, orbbec-astra, orbbec-astra-pro, asus-xtion -->
     <xacro:arg name="has_thermal_camera" default="false"/>
     <xacro:arg name="multiple" default="false"/>
+    <xacro:arg name="description_calibration_dir" default="$(find tiago_description_calibration)/urdf/calibration"/>
+    <xacro:arg name="extrinsic_calibration_dir" default="$(find tiago_description_calibration)/urdf/calibration"/>
     <xacro:arg name="namespace" default=""/>
+    <xacro:arg name="no_safety_eps" default="false"/>
     <xacro:property name="wrist_model" value="$(arg wrist_model)" />
     <xacro:property name="end_effector" value="$(arg end_effector)" />
     <xacro:property name="ft_sensor" value="$(arg ft_sensor)" />
@@ -25,13 +28,14 @@
     <xacro:property name="camera_model" value="$(arg camera_model)" />
     <xacro:property name="is_multiple" value="$(arg multiple)" />
     <xacro:property name="nsp" value="$(arg namespace)" />
+    <xacro:property name="no_safety_eps" value="$(arg no_safety_eps)" />
 
   <xacro:if value="$(arg arm)">
     <xacro:if value="${wrist_model not in ['wrist-2010', 'wrist-2017']}">
       <xacro:wrong_wrist_model/>
     </xacro:if>
   </xacro:if>
-  <xacro:if value="${end_effector not in ['false', False, 'pal-gripper', 'pal-hey5', 'schunk-wsg', 'custom']}">
+  <xacro:if value="${end_effector not in ['false', False, 'pal-gripper', 'pal-hey5', 'schunk-wsg', 'robotiq-2f-85', 'robotiq-2f-140', 'custom']}">
     <xacro:wrong_end_effector/>
   </xacro:if>
   <xacro:if value="${ft_sensor not in ['false', False, 'schunk-ft']}">
@@ -51,6 +55,7 @@
    <xacro:property name="end_effector_link"       value="${'wrist_ft_tool_link' if has_ft_sensor else 'arm_tool_link'}"/>
    <xacro:property name="end_effector_name"       value="${'hand' if end_effector == 'pal-hey5' else 'gripper'}"/>
    <xacro:property name="head_link_name"          value="head_2_link"/>
+   <xacro:property name="description_calibration_dir"       value="${arg description_calibration_dir}"/>
 
   <!-- The following included files set up definitions of parts of the robot body -->
   <!-- Base -->
@@ -63,7 +68,7 @@
     <!-- Arm -->
     <xacro:include filename="$(find tiago_description)/urdf/arm/arm.urdf.xacro" />
     <xacro:include filename="$(find tiago_description)/urdf/end_effector/end_effector.urdf.xacro" />
-    <xacro:include filename="$(find tiago_description_calibration)/urdf/calibration/calibration_constants.urdf.xacro" />
+  <xacro:include filename="$(arg description_calibration_dir)/calibration_constants.urdf.xacro" />
   </xacro:if>
 
   <!-- Force Torque sensor -->
@@ -82,9 +87,12 @@
   <!-- Now we can start using the macros included above to define the actual robot -->
   <xacro:base_sensors name="base" laser_model="$(arg laser_model)" sonars="true" microphone="true"/>
   <xacro:tiago_torso name="torso" parent="base_link"/>
-  <xacro:head name="head" parent="torso_lift_link" camera_model="$(arg camera_model)" description_calibration_package="tiago_description_calibration"/>
+  <xacro:head name="head" parent="torso_lift_link" camera_model="$(arg camera_model)" 
+	  description_calibration_dir="$(arg description_calibration_dir)" 
+	  extrinsic_calibration_dir="$(arg extrinsic_calibration_dir)"
+    no_safety_eps="${no_safety_eps}"/>
   <xacro:if value="${has_arm}">
-	  <xacro:tiago_arm name="arm" parent="torso_lift_link" wrist_model="${wrist_model}" has_ft_sensor="${has_ft_sensor}" reflect="1" tiago_dual="-1" arm_1_offset="${arm_1_joint_offset}" arm_2_offset="${arm_2_joint_offset}" arm_3_offset="${arm_3_joint_offset}" arm_4_offset="${arm_4_joint_offset}" arm_5_offset="${arm_5_joint_offset}" arm_6_offset="${arm_6_joint_offset}" arm_7_offset="${arm_7_joint_offset}">
+	  <xacro:tiago_arm name="arm" parent="torso_lift_link" wrist_model="${wrist_model}" has_ft_sensor="${has_ft_sensor}" reflect="1" tiago_dual="-1" arm_1_offset="${arm_1_joint_offset}" arm_2_offset="${arm_2_joint_offset}" arm_3_offset="${arm_3_joint_offset}" arm_4_offset="${arm_4_joint_offset}" arm_5_offset="${arm_5_joint_offset}" arm_6_offset="${arm_6_joint_offset}" arm_7_offset="${arm_7_joint_offset}" no_safety_eps="${no_safety_eps}">
         <origin xyz="0.15505 0.014 -0.151" rpy="0 0 ${-90 * deg_to_rad}" />
       </xacro:tiago_arm>
       <xacro:tiago_end_effector name="${end_effector_name}" parent="${end_effector_link}" type="${end_effector}" reflect="1"/>
