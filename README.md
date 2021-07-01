@@ -5,9 +5,11 @@
 iGibson is a simulation environment providing fast visual rendering and physics simulation based on Bullet. iGibson is equipped with fifteen fully interactive high quality scenes, hundreds of large 3D scenes reconstructed from real homes and offices, and compatibility with datasets like CubiCasa5K and 3D-Front, providing 8000+ additional interactive scenes. Some of the features of iGibson include domain randomization, integration with motion planners and easy-to-use tools to collect human demonstrations. With these scenes and features, iGibson allows researchers to train and evaluate robotic agents that use visual signals to solve navigation and manipulation tasks such as opening doors, picking up and placing objects, or searching in cabinets.
 
 ### Installation ###
+* `git clone --recurse-submodules https://github.com/dnandha/iGibson.git`
 * `conda env create -f environment.yml`
 * `conda activate py2-igibson`
 * `pip install -e .`
+* `mkdir ~/tmp`
 * `python -m gibson2.utils.assets_utils --download_assets`
 * `python -m gibson2.utils.assets_utils --download_demo_data`
 * `python -m gibson2.utils.assets_utils --download_ig_dataset`
@@ -18,9 +20,10 @@ iGibson is a simulation environment providing fast visual rendering and physics 
 * `python tiago_dual_ik.py`
 
 
-### Installation for ROS ###
+### Installation for ROS Melodic ###
 * `export PYTHONPATH="$PYTHONPATH:<PATH_TO_IGIBSON>"` (add this line to ".bashrc" for auto export in future)
-* `mkdir ~/catkin_ws`
+* `sudo apt install python-catkin-tools ros-melodic-turtlebot3-teleop ros-melodic-depthimage-to-laserscan ros-melodic-hector-mapping`
+* `mkdir -p ~/catkin_ws/src`
 * `cd <PATH_TO_IGIBSON>/gibson2`
 * `ln -s $PWD/examples/ros/gibson2-ros ~/catkin_ws/src/`
 * `cd ~/catkin_ws`
