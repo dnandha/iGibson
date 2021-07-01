@@ -9,6 +9,7 @@ iGibson is a simulation environment providing fast visual rendering and physics 
 * `conda env create -f environment.yml`
 * `conda activate py2-igibson`
 * `pip install -e .`
+* `mkdir ~/tmp`
 * `python -m gibson2.utils.assets_utils --download_assets`
 * `python -m gibson2.utils.assets_utils --download_demo_data`
 * `python -m gibson2.utils.assets_utils --download_ig_dataset`
