@@ -22,6 +22,8 @@ iGibson is a simulation environment providing fast visual rendering and physics 
 
 ### Installation for ROS ###
 * `export PYTHONPATH="$PYTHONPATH:<PATH_TO_IGIBSON>"` (add this line to ".bashrc" for auto export in future)
+* `sudo apt install python-catkin-tools`
+* `sudo apt install ros-melodic-turtlebot3-teleop`
 * `mkdir -p ~/catkin_ws/src`
 * `cd <PATH_TO_IGIBSON>/gibson2`
 * `ln -s $PWD/examples/ros/gibson2-ros ~/catkin_ws/src/`
