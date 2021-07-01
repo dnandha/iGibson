@@ -176,7 +176,8 @@ def download_assets():
     if not os.path.exists(os.path.dirname(gibson2.assets_path)):
         os.makedirs(os.path.dirname(gibson2.assets_path))
 
-    if not os.path.exists(gibson2.assets_path):
+    #if not os.path.exists(gibson2.assets_path):
+    if True:
         os.system(
             'wget -c --retry-connrefused --tries=5 --timeout=5 '
             'https://storage.googleapis.com/gibson_scenes/assets_igibson.tar.gz -O ~/tmp/assets_igibson.tar.gz')
